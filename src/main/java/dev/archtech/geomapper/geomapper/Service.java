@@ -80,6 +80,11 @@ public class Service {
         task.setOnCancelled((e) -> {
             submitStatusLabel.setText(task.getMessage());
             window.getChildren().stream().forEach(node -> node.setDisable(false));
+            progressBar.setStyle("-fx-accent: yellow;");
+        });
+        task.setOnFailed((e) -> {
+            submitStatusLabel.setText(task.getMessage());
+            window.getChildren().stream().forEach(node -> node.setDisable(false));
             progressBar.setStyle("-fx-accent: red;");
         });
         new Thread(task).start();

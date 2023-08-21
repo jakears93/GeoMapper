@@ -1,0 +1,12 @@
+USING GOOGLE API: SINGLE THREAD
+    Test 1000 entries Non-Unique
+        Started at 12:27:50
+        Finished at 12:29:08
+        Total time: 1m:18s
+        Time per row: 78ms
+    Test with 10000 entries Unique = 1784
+        Started at 12:32:00
+        Finished at 12:35:10
+        Total time: 3m:10s
+        Time per row: 106ms
+    Extrapolated 30000 unique rows = 53m:25s

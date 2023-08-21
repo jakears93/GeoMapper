@@ -6,8 +6,8 @@ module dev.archtech.geomapper.geomapper {
     requires com.dlsc.formsfx;
     requires org.kordamp.bootstrapfx.core;
     requires com.opencsv;
-    requires org.apache.httpcomponents.httpclient;
-    requires org.apache.httpcomponents.httpcore;
+    requires com.google.gson;
+    requires google.maps.services;
 
     opens dev.archtech.geomapper.geomapper to javafx.fxml;
     exports dev.archtech.geomapper.geomapper;
