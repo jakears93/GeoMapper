@@ -1,0 +1,38 @@
+TODO:
+    -releases
+        -add all necessary javafx classifier jars
+        -create release script
+            -create new package that has update scripts, install scripts and jar. Name it GeoMapperPackage.zip
+            -create release on github using:  gh release create "version" [geomapperpackage] -t "title" -n "release notes"
+        -add release script to mvn package?
+        -create install scripts
+            -download jdk
+            -extract jdk
+            -create run script
+        -create update scripts
+            -https://github.com/jakears93/GeoMapper/releases/latest/download/GeoMapperPackage.zip
+            -remove all old files, download package from above, run install script
+    -final dir structure:
+        -GeoMapper
+            -/bin
+                -*.jar
+            -/lib
+                -jdk
+            -/data
+                [
+                    -/filename minus .csv
+                        -/images
+                            [
+                                -image.png
+                            ]
+                        -/filename-runtime.zip
+                ]
+            -install
+            -update
+            -uninstall
+            -GeoMapper.exe
+    -starting dir structure:
+        -GeoMapper
+            -install
+            -/bin
+                -*.jar

@@ -92,8 +92,8 @@ public class ProcessTask extends Task<String> {
     private String generateFileName(int rowIndex, GPSRowData rowData) {
         StringBuilder pathBuilder = new StringBuilder(outputDirectory)
                 .append(rowIndex+1)
-                .append("_")
-                .append(rowData.getTime().replace(" ", "-").replace("/", "-"))
+                .append("__")
+                .append(rowData.getTime().replace(" ", "-").replace("/", "-").replace(":", ","))
                 .append("_")
                 .append(rowData.getLatitude().replace(".", ","))
                 .append("_")
