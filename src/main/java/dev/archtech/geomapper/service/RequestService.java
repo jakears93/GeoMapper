@@ -1,106 +1,69 @@
 package dev.archtech.geomapper.service;
 
+import dev.archtech.geomapper.model.MapParameters;
 import dev.archtech.geomapper.model.MapRequest;
+import dev.archtech.geomapper.model.RequestModel;
 import dev.archtech.geomapper.task.ProcessTask;
-import javafx.event.ActionEvent;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
+import javafx.beans.binding.Bindings;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 public class RequestService {
+    RequestModel viewModel;
 
-    private Map<String, Integer> zoomValueMap;
-
-    public RequestService() {
-        init();
+    public RequestService(RequestModel viewModel) {
+        this.viewModel = viewModel;
+        this.viewModel.enableSubmitButtonProperty().bind(
+                Bindings.createBooleanBinding(this::validateFileName, this.viewModel.fileNameProperty())
+        );
     }
 
-    private void init(){
-        this.zoomValueMap = new HashMap<>();
-        zoomValueMap.put("World", 1);
-        zoomValueMap.put("Street", 15);
-        zoomValueMap.put("Street+", 16);
-        zoomValueMap.put("Street++", 17);
-        zoomValueMap.put("Street+++", 18);
-        zoomValueMap.put("Building", 20);
-    }
-
-    public Map<String, Integer> getZoomValueMap(){
-        return this.zoomValueMap;
-    }
-    public int getZoomValueByKey(String key){
-        return zoomValueMap.get(key);
-    }
-
-    public String selectFile(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        Node node = (Node) event.getSource();
-        File file = fileChooser.showOpenDialog(node.getScene().getWindow());
-        if(file == null){
-            return null;
-        }
-        return file.getAbsolutePath();
-    }
-
-    public boolean validateFileType(String value) {
-        if(value.endsWith(".csv")){
+    public boolean validateFileName(){
+        if(this.viewModel.getFileName().endsWith(".csv")){
             return true;
         }
-//        if(value.endsWith(".xlsx")){
-//            return true;
-//        }
         return false;
     }
 
-    public void beginProcessRequest(VBox window, ProgressBar progressBar, Label submitStatusLabel, MapRequest mapRequest) throws Exception {
-        progressBar.setVisible(false);
-
-        String validationError = validateParameters(mapRequest);
-        if(validationError != null){
-            submitStatusLabel.setText(validationError);
-            return;
+    public boolean validateParameters() {
+        if(this.viewModel.getApiKey().length() < 15){
+            this.viewModel.submitStatusProperty().set("API Key Validation Error");
+            return false;
         }
-        submitStatusLabel.setText("Processing");
-        window.getChildren().stream().forEach(node -> node.setDisable(true));
+        if(this.viewModel.getStartingRow() < 2){
+            this.viewModel.submitStatusProperty().set("Starting Row Must Be A Valid Data Row Number.");
+            return false;
+        }
+        if(this.viewModel.getMaxDataRows() < 1){
+            this.viewModel.submitStatusProperty().set("Max Data Row Must Be Greater Than 0.");
+            return false;
+        }
+        return true;
+    }
 
+    public void beginProcessRequest(ProgressBar progressBar){
+        MapParameters mapParameters = new MapParameters(this.viewModel.getApiKey(), this.viewModel.getSecret(), this.viewModel.getZoomValue(), this.viewModel.getSelectedMapType().toLowerCase());
+        MapRequest mapRequest = new MapRequest(mapParameters, this.viewModel.getStartingRow(), this.viewModel.getMaxDataRows(), this.viewModel.isUsesUniqueTimestamps(), this.viewModel.getFileName());
 
         ProcessTask task = new ProcessTask(mapRequest);
         progressBar.progressProperty().bind(task.progressProperty());
-        progressBar.setVisible(true);
         progressBar.setStyle("-fx-accent: blue;");
         task.setOnSucceeded((e)-> {
-            submitStatusLabel.setText(task.getValue());
-            window.getChildren().stream().forEach(node -> node.setDisable(false));
+            this.viewModel.setSubmitStatus(task.getValue());
             progressBar.setStyle("-fx-accent: green;");
+            this.viewModel.setDisableInput(false);
+
         });
         task.setOnCancelled((e) -> {
-            submitStatusLabel.setText(task.getMessage());
-            window.getChildren().stream().forEach(node -> node.setDisable(false));
+            this.viewModel.setSubmitStatus(task.getMessage());
             progressBar.setStyle("-fx-accent: yellow;");
+            this.viewModel.setDisableInput(false);
         });
         task.setOnFailed((e) -> {
-            submitStatusLabel.setText(task.getMessage());
-            window.getChildren().stream().forEach(node -> node.setDisable(false));
+            this.viewModel.setSubmitStatus(task.getMessage());
             progressBar.setStyle("-fx-accent: red;");
+            this.viewModel.setDisableInput(false);
         });
         new Thread(task).start();
     }
-
-
-
-    private String validateParameters(MapRequest mapRequest) {
-        if(mapRequest.getMapParameters().getApiKey().length() < 15){
-            return "API Key Validation Error";
-        }
-        if(mapRequest.getStartingRowIndex() < 1){
-            return "Starting Row Must Be A Valid Data Row Number.";
-        }
-        return null;
-    }
 }
+

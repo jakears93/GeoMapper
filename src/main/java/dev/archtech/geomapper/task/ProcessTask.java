@@ -76,13 +76,19 @@ public class ProcessTask extends Task<String> {
             updateProgress(100,100);
             return String.format("Successfully Processed %s Data Rows", numOfRows-duplicateRowCount);
         } catch (FileNotFoundException e) {
+            updateProgress(100,100);
+            e.printStackTrace();
             throw new FailedRequestException(String.format("Unable To Open File %s", mapRequest.getDataFileName()));
         } catch (IOException | CsvValidationException e) {
+            updateProgress(100,100);
+            e.printStackTrace();
             throw new FailedRequestException(String.format("Unable To Read File %s", mapRequest.getDataFileName()));
         } catch (FailedRequestException e) {
             throw e;
         } catch (Exception e) {
-            throw new FailedRequestException(String.format("Error With File %s", mapRequest.getDataFileName()));
+            updateProgress(100,100);
+            e.printStackTrace();
+            throw new FailedRequestException(e.getLocalizedMessage());
         }
     }
 

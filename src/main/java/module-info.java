@@ -23,4 +23,7 @@ module dev.archtech.geomapper.geomapper {
     opens dev.archtech.geomapper.task to javafx.fxml;
     exports dev.archtech.geomapper.service;
     opens dev.archtech.geomapper.service to javafx.fxml;
+
+    exports dev.archtech.geomapper.view;
+    opens dev.archtech.geomapper.view to javafx.fxml;
 }
