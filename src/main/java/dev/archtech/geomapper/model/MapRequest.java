@@ -70,4 +70,15 @@ public class MapRequest {
     public void setDataFile(File dataFile) {
         this.dataFile = dataFile;
     }
+
+    @Override
+    public String toString() {
+        return "MapRequest{" +
+                "mapParameters=" + mapParameters +
+                ", startingRowIndex=" + startingRowIndex +
+                ", maxDataRows=" + maxDataRows +
+                ", uniqueFlag=" + uniqueFlag +
+                ", dataFileName='" + dataFileName + '\'' +
+                '}';
+    }
 }

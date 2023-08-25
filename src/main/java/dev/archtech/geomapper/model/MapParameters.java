@@ -46,4 +46,16 @@ public class MapParameters {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
+
+    @Override
+    public String toString() {
+        return "MapParameters{" +
+                "apiKey='" + apiKey + '\'' +
+                ", secret='" + secret + '\'' +
+                ", zoom=" + zoom +
+                ", mapType='" + mapType + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
+    }
 }
