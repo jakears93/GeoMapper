@@ -1,5 +1,8 @@
-package dev.archtech.geomapper.geomapper;
+package dev.archtech.geomapper.controller;
 
+import dev.archtech.geomapper.model.MapParameters;
+import dev.archtech.geomapper.model.MapRequest;
+import dev.archtech.geomapper.service.RequestService;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -36,10 +39,10 @@ public class MainController {
 
     private static Integer DEFAULT_MAX_ROWS = 20000;
     private static Integer DEFAULT_STARTING_ROW = 2;
-    private final Service service;
+    private final RequestService requestService;
 
     public MainController() {
-        this.service = new Service();
+        this.requestService = new RequestService();
     }
 
     @FXML
@@ -54,9 +57,9 @@ public class MainController {
                 throw new RuntimeException(ex);
             }
         });
-        zoomChoiceBox.setItems(FXCollections.observableList(service.getZoomValueMap().keySet()
+        zoomChoiceBox.setItems(FXCollections.observableList(requestService.getZoomValueMap().keySet()
                 .stream()
-                .sorted((k1, k2) -> Integer.compare(service.getZoomValueByKey(k1), service.getZoomValueByKey(k2)))
+                .sorted((k1, k2) -> Integer.compare(requestService.getZoomValueByKey(k1), requestService.getZoomValueByKey(k2)))
                 .toList()));
         zoomChoiceBox.setValue("Street");
         mapTypeChoiceBox.setItems(FXCollections.observableList(List.of(
@@ -72,14 +75,14 @@ public class MainController {
     }
     @FXML
     protected void onSelectFileClick(ActionEvent event){
-        String value = service.selectFile(event);
+        String value = requestService.selectFile(event);
         if(value == null){
             return;
         }
         else{
             fileNameLabel.setText(value);
         }
-        if(service.validateFileType(value)){
+        if(requestService.validateFileType(value)){
             submitButton.setVisible(true);
         }
         else{
@@ -89,9 +92,9 @@ public class MainController {
 
     @FXML
     protected void onSubmitClick(ActionEvent event) throws Exception {
-        MapParameters parameters = new MapParameters(apiKeyEntry.getText(), secretEntry.getText(), service.getZoomValueByKey(zoomChoiceBox.getValue()), mapTypeChoiceBox.getValue().toLowerCase());
+        MapParameters parameters = new MapParameters(apiKeyEntry.getText(), secretEntry.getText(), requestService.getZoomValueByKey(zoomChoiceBox.getValue()), mapTypeChoiceBox.getValue().toLowerCase());
         MapRequest request = new MapRequest(parameters, Integer.valueOf(startingRowEntry.getText())-1, Integer.valueOf(maxDataRowsEntry.getText()), uniqueTimestampsCheckBox.selectedProperty().getValue(), fileNameLabel.getText());
 
-        service.beginProcessRequest(mainWindow, progressBar, submitStatusLabel, request);
+        requestService.beginProcessRequest(mainWindow, progressBar, submitStatusLabel, request);
     }
 }

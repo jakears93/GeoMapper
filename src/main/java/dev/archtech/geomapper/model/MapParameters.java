@@ -1,4 +1,4 @@
-package dev.archtech.geomapper.geomapper;
+package dev.archtech.geomapper.model;
 
 public class MapParameters {
     private String apiKey;

@@ -1,4 +1,4 @@
-package dev.archtech.geomapper.geomapper;
+package dev.archtech.geomapper;
 
 public class GeoMapperLauncher {
     public static void main(String[] args) {

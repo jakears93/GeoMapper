@@ -36,3 +36,5 @@ TODO:
             -install
             -/bin
                 -*.jar
+
+changelog messages:  git log --pretty=format:"%s" HEAD...v1.0.0-SNAPSHOT

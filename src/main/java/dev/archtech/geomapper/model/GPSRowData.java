@@ -1,4 +1,4 @@
-package dev.archtech.geomapper.geomapper;
+package dev.archtech.geomapper.model;
 
 import java.time.LocalDateTime;
 

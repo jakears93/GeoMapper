@@ -1,4 +1,4 @@
-package dev.archtech.geomapper.geomapper;
+package dev.archtech.geomapper;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

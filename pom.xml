@@ -111,7 +111,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                dev.archtech.geomapper.geomapper/dev.archtech.geomapper.geomapper.GeoMapperApplication
+                                dev.archtech.geomapper.geomapper/dev.archtech.geomapper.GeoMapperApplication
                             </mainClass>
                             <compress>2</compress>
                             <launcher>GeoMapper</launcher>
@@ -136,7 +136,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>dev.archtech.geomapper.geomapper.GeoMapperLauncher</mainClass>
+                                    <mainClass>dev.archtech.geomapper.GeoMapperLauncher</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

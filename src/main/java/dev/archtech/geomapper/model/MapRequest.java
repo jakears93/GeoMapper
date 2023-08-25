@@ -1,4 +1,6 @@
-package dev.archtech.geomapper.geomapper;
+package dev.archtech.geomapper.model;
+
+import dev.archtech.geomapper.model.MapParameters;
 
 import java.io.File;
 

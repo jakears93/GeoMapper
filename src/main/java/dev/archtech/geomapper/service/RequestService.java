@@ -1,5 +1,7 @@
-package dev.archtech.geomapper.geomapper;
+package dev.archtech.geomapper.service;
 
+import dev.archtech.geomapper.model.MapRequest;
+import dev.archtech.geomapper.task.ProcessTask;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -11,11 +13,11 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Service {
+public class RequestService {
 
     private Map<String, Integer> zoomValueMap;
 
-    public Service() {
+    public RequestService() {
         init();
     }
 

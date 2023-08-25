@@ -9,6 +9,18 @@ module dev.archtech.geomapper.geomapper {
     requires com.google.gson;
     requires google.maps.services;
 
-    opens dev.archtech.geomapper.geomapper to javafx.fxml;
-    exports dev.archtech.geomapper.geomapper;
+    opens dev.archtech.geomapper to javafx.fxml;
+    exports dev.archtech.geomapper;
+    exports dev.archtech.geomapper.exception;
+    opens dev.archtech.geomapper.exception to javafx.fxml;
+    exports dev.archtech.geomapper.util;
+    opens dev.archtech.geomapper.util to javafx.fxml;
+    exports dev.archtech.geomapper.model;
+    opens dev.archtech.geomapper.model to javafx.fxml;
+    exports dev.archtech.geomapper.controller;
+    opens dev.archtech.geomapper.controller to javafx.fxml;
+    exports dev.archtech.geomapper.task;
+    opens dev.archtech.geomapper.task to javafx.fxml;
+    exports dev.archtech.geomapper.service;
+    opens dev.archtech.geomapper.service to javafx.fxml;
 }

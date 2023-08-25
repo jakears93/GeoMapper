@@ -1,4 +1,4 @@
-package dev.archtech.geomapper.geomapper;
+package dev.archtech.geomapper.util;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;

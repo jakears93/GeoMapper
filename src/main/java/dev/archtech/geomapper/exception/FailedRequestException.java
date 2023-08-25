@@ -1,4 +1,4 @@
-package dev.archtech.geomapper.geomapper;
+package dev.archtech.geomapper.exception;
 
 public class FailedRequestException extends RuntimeException{
     int statusCode;

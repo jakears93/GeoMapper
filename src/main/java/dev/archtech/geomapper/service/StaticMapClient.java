@@ -1,4 +1,4 @@
-package dev.archtech.geomapper.geomapper;
+package dev.archtech.geomapper.service;
 
 import com.google.maps.GeoApiContext;
 import com.google.maps.ImageResult;
@@ -7,6 +7,8 @@ import com.google.maps.StaticMapsRequest;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.Size;
+import dev.archtech.geomapper.exception.FailedRequestException;
+import dev.archtech.geomapper.model.MapParameters;
 
 import java.io.IOException;
 
