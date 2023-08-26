@@ -1,11 +1,18 @@
 package dev.archtech.geomapper.service;
 
+import com.opencsv.exceptions.CsvValidationException;
+import dev.archtech.geomapper.exception.FailedRequestException;
 import dev.archtech.geomapper.model.MapParameters;
 import dev.archtech.geomapper.model.MapRequest;
 import dev.archtech.geomapper.model.RequestModel;
 import dev.archtech.geomapper.task.ProcessTask;
+import dev.archtech.geomapper.util.GPSFileReader;
 import javafx.beans.binding.Bindings;
 import javafx.scene.control.ProgressBar;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class RequestService {
     RequestModel viewModel;
@@ -18,10 +25,7 @@ public class RequestService {
     }
 
     public boolean validateFileName(){
-        if(this.viewModel.getFileName().endsWith(".csv")){
-            return true;
-        }
-        return false;
+        return this.viewModel.getFileName().endsWith(".csv");
     }
 
     public boolean validateParameters() {
@@ -33,37 +37,46 @@ public class RequestService {
             this.viewModel.submitStatusProperty().set("Starting Row Must Be A Valid Data Row Number.");
             return false;
         }
-        if(this.viewModel.getMaxDataRows() < 1){
-            this.viewModel.submitStatusProperty().set("Max Data Row Must Be Greater Than 0.");
+        if(this.viewModel.getLastDataRow() < this.viewModel.getStartingRow()){
+            this.viewModel.submitStatusProperty().set("Last Data Row Must Be Greater Than The Starting Row.");
             return false;
         }
         return true;
     }
+    private int evaluateAvailableRows(String fileName, int startIndex, int endIndex) {
+        int count = 0;
+        try (GPSFileReader fileReader = new GPSFileReader(new File(fileName))) {
+            fileReader.skip(startIndex);
+            while (fileReader.peek() != null) {
+                if (count >= endIndex) {
+                    break;
+                }
+                fileReader.readNext();
+                count++;
+            }
+        } catch (Exception e) {
+            return -1;
+        }
+        return count;
+    }
 
-    public void beginProcessRequest(ProgressBar progressBar){
+    public ProcessTask beginProcessRequest(){
         MapParameters mapParameters = new MapParameters(this.viewModel.getApiKey(), this.viewModel.getSecret(), this.viewModel.getZoomValue(), this.viewModel.getSelectedMapType().toLowerCase());
-        MapRequest mapRequest = new MapRequest(mapParameters, this.viewModel.getStartingRow(), this.viewModel.getMaxDataRows(), this.viewModel.isUsesUniqueTimestamps(), this.viewModel.getFileName());
+        MapRequest mapRequest = new MapRequest(mapParameters, this.viewModel.getStartingRow()-1, this.viewModel.getLastDataRow()-1, this.viewModel.isUsesUniqueTimestamps(), this.viewModel.getFileName());
+        int availableRows = evaluateAvailableRows(mapRequest.getDataFileName(), mapRequest.getStartingRowIndex(), mapRequest.getLastDataRowIndex());
+        if(availableRows == 0){
+            this.viewModel.submitStatusProperty().set("Starting Row Larger Than Available Rows");
+            return null;
+        }
+        else if (availableRows == -1) {
+            this.viewModel.submitStatusProperty().set(String.format("Unable To Read File %s", mapRequest.getDataFileName()));
+            return null;
+        }
+        mapRequest.setLastDataRowIndex(mapRequest.getStartingRowIndex() + availableRows -1);
 
         ProcessTask task = new ProcessTask(mapRequest);
-        progressBar.progressProperty().bind(task.progressProperty());
-        progressBar.setStyle("-fx-accent: blue;");
-        task.setOnSucceeded((e)-> {
-            this.viewModel.setSubmitStatus(task.getValue());
-            progressBar.setStyle("-fx-accent: green;");
-            this.viewModel.setDisableInput(false);
-
-        });
-        task.setOnCancelled((e) -> {
-            this.viewModel.setSubmitStatus(task.getMessage());
-            progressBar.setStyle("-fx-accent: yellow;");
-            this.viewModel.setDisableInput(false);
-        });
-        task.setOnFailed((e) -> {
-            this.viewModel.setSubmitStatus(task.getMessage());
-            progressBar.setStyle("-fx-accent: red;");
-            this.viewModel.setDisableInput(false);
-        });
         new Thread(task).start();
+        return task;
     }
 }
 

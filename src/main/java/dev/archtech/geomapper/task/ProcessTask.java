@@ -16,8 +16,8 @@ public class ProcessTask extends Task<String> {
 
     private final MapRequest mapRequest;
     private static final String OUTPUT_DIRECTORY_BASE = "output";
-    private String outputDirectory;
-    private Set<String> uniqueDateMap;
+    private final String outputDirectory;
+    private final Set<String> uniqueDateMap;
 
     public ProcessTask(MapRequest mapRequest) {
         this.mapRequest = mapRequest;
@@ -38,22 +38,16 @@ public class ProcessTask extends Task<String> {
     private String processRequest() {
         File directory = new File(outputDirectory);
         directory.mkdir();
-        int numOfRows = evaluateAvailableRows(this.mapRequest.getDataFile(), this.mapRequest.getStartingRowIndex(), this.mapRequest.getMaxDataRows());
-        if(numOfRows == 0){
-            throw new FailedRequestException("Starting Row Larger Than Available Rows");
-        }
-
+        int availableRows = this.mapRequest.getLastDataRowIndex() - this.mapRequest.getStartingRowIndex() +1;
         int duplicateRowCount = 0;
         try (
                 StaticMapClient client = new StaticMapClient(mapRequest.getMapParameters().getApiKey(), mapRequest.getMapParameters().getSecret());
                 GPSFileReader fileReader = new GPSFileReader(mapRequest.getDataFile());
         ){
             fileReader.skip(this.mapRequest.getStartingRowIndex());
-            for(int i=this.mapRequest.getStartingRowIndex(); i<numOfRows+this.mapRequest.getStartingRowIndex() || i-this.mapRequest.getStartingRowIndex() > this.mapRequest.getMaxDataRows(); i++){
+            for(int i = this.mapRequest.getStartingRowIndex(); i<=this.mapRequest.getLastDataRowIndex(); i++){
                 if(fileReader.peek() == null){
-                    System.out.println(i);
-                    System.out.println(numOfRows);
-                    updateProgress(i, numOfRows-1);
+                    updateProgress(i+1, availableRows);
                     break;
                 }
                 String[] rawRowData = fileReader.readNext();
@@ -71,10 +65,10 @@ public class ProcessTask extends Task<String> {
                 String fileName = generateFileName(i, rowData);
                 byte[] imageDate = client.submitRequest(mapRequest.getMapParameters());
                 saveImage(imageDate, fileName);
-                updateProgress(i, numOfRows-1);
+                updateProgress(i+1, availableRows);
             }
             updateProgress(100,100);
-            return String.format("Successfully Processed %s Data Rows", numOfRows-duplicateRowCount);
+            return String.format("Successfully Processed %s Data Rows", availableRows-duplicateRowCount);
         } catch (FileNotFoundException e) {
             updateProgress(100,100);
             e.printStackTrace();
@@ -101,40 +95,15 @@ public class ProcessTask extends Task<String> {
     }
 
     private String generateFileName(int rowIndex, GPSRowData rowData) {
-        StringBuilder pathBuilder = new StringBuilder(outputDirectory)
-                .append(rowIndex+1)
-                .append("__")
-                .append(rowData.getTime().replace(" ", "-").replace("/", "-").replace(":", ","))
-                .append("_")
-                .append(rowData.getLatitude().replace(".", ","))
-                .append("_")
-                .append(rowData.getLongitude().replace(".",","))
-                .append(".png");
-        return pathBuilder.toString();
-    }
-
-    private int evaluateAvailableRows(File file, int start, int max) {
-        try (GPSFileReader fileReader = new GPSFileReader(file)) {
-            fileReader.skip(start);
-            int count = 0;
-            while (fileReader.peek() != null) {
-                if (count >= max) {
-                    break;
-                }
-                fileReader.readNext();
-                count++;
-            }
-            if(count == 0){
-                throw new FailedRequestException("Starting Row Larger Than Available Rows");
-            }
-            return count;
-        } catch (FileNotFoundException e) {
-            throw new FailedRequestException(String.format("Unable To Open File %s", mapRequest.getDataFileName()));
-        } catch (IOException | CsvValidationException e) {
-            throw new FailedRequestException(String.format("Unable To Read File %s", mapRequest.getDataFileName()));
-        } catch (Exception e) {
-            throw new FailedRequestException(String.format("Error With File %s", mapRequest.getDataFileName()));
-        }
+        return outputDirectory +
+                (rowIndex + 1) +
+                "__" +
+                rowData.getTime().replace(" ", "-").replace("/", "-").replace(":", ",") +
+                "_" +
+                rowData.getLatitude().replace(".", ",") +
+                "_" +
+                rowData.getLongitude().replace(".", ",") +
+                ".png";
     }
 
     private void saveImage(byte[] data, String fileName){
@@ -142,6 +111,8 @@ public class ProcessTask extends Task<String> {
         try (FileOutputStream outputStream = new FileOutputStream(targetFile)) {
             outputStream.write(data);
         } catch (IOException e) {
+            updateProgress(100L,100L);
+            e.printStackTrace();
             throw new FailedRequestException(String.format("Failed To Save File %s", fileName));
         }
     }

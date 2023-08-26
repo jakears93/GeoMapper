@@ -10,22 +10,20 @@ import java.util.List;
 import java.util.Map;
 
 public class RequestModel {
-    private SimpleStringProperty apiKey;
-    private SimpleStringProperty secret;
-    private SimpleListProperty<String> zoomChoices;
-    private SimpleStringProperty selectedZoom;
-    private SimpleListProperty<String> mapTypeChoices;
-    private SimpleStringProperty selectedMapType;
-    private SimpleBooleanProperty usesUniqueTimestamps;
-    private SimpleStringProperty maxDataRows;
-    private SimpleStringProperty startingRow;
-    private SimpleStringProperty fileName;
-    private SimpleStringProperty submitStatus;
-    private SimpleBooleanProperty enableSubmitButton;
-    private SimpleBooleanProperty isRunning;
-    private SimpleBooleanProperty disableInput;
-
-    private Map<String, Integer> zoomValueMap = Map.of(
+    private final SimpleStringProperty apiKey;
+    private final SimpleStringProperty secret;
+    private final SimpleListProperty<String> zoomChoices;
+    private final SimpleStringProperty selectedZoom;
+    private final SimpleListProperty<String> mapTypeChoices;
+    private final SimpleStringProperty selectedMapType;
+    private final SimpleBooleanProperty usesUniqueTimestamps;
+    private final SimpleStringProperty lastDataRow;
+    private final SimpleStringProperty startingRow;
+    private final SimpleStringProperty fileName;
+    private final SimpleStringProperty submitStatus;
+    private final SimpleBooleanProperty enableSubmitButton;
+    private final SimpleBooleanProperty isRunning;
+    private final Map<String, Integer> zoomValueMap = Map.of(
     "World", 1,
     "Street", 15,
     "Street+", 16,
@@ -48,7 +46,7 @@ public class RequestModel {
                 "Hybrid"
         )));
         this.usesUniqueTimestamps = new SimpleBooleanProperty(true);
-        this.maxDataRows =  new SimpleStringProperty("20000");
+        this.lastDataRow =  new SimpleStringProperty("20000");
         this.startingRow =  new SimpleStringProperty("2");
         this.fileName =  new SimpleStringProperty("");
         this.submitStatus =  new SimpleStringProperty("");
@@ -57,7 +55,6 @@ public class RequestModel {
 
         this.enableSubmitButton = new SimpleBooleanProperty();
         this.isRunning = new SimpleBooleanProperty(false);
-        this.disableInput = new SimpleBooleanProperty(false);
     }
 
     public String getApiKey() {
@@ -120,16 +117,16 @@ public class RequestModel {
         this.usesUniqueTimestamps.set(usesUniqueTimestamps);
     }
 
-    public int getMaxDataRows() {
-        return Integer.parseInt(this.maxDataRows.get());
+    public int getLastDataRow() {
+        return Integer.parseInt(this.lastDataRow.get());
     }
 
-    public SimpleStringProperty maxDataRowsProperty() {
-        return maxDataRows;
+    public SimpleStringProperty lastDataRowProperty() {
+        return lastDataRow;
     }
 
-    public void setMaxDataRows(String maxDataRows) {
-        this.maxDataRows.set(maxDataRows);
+    public void setLastDataRow(String lastDataRow) {
+        this.lastDataRow.set(lastDataRow);
     }
 
     public int getStartingRow() {
@@ -218,17 +215,5 @@ public class RequestModel {
 
     public void setIsRunning(boolean isRunning) {
         this.isRunning.set(isRunning);
-    }
-
-    public boolean isDisableInput() {
-        return disableInput.get();
-    }
-
-    public SimpleBooleanProperty disableInputProperty() {
-        return disableInput;
-    }
-
-    public void setDisableInput(boolean disableInput) {
-        this.disableInput.set(disableInput);
     }
 }

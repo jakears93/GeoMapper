@@ -43,12 +43,9 @@ public class StaticMapClient implements AutoCloseable{
         try {
             ImageResult result = request.await();
             return result.imageData;
-        } catch (ApiException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (ApiException | InterruptedException | IOException e) {
+            e.printStackTrace();
+            throw new FailedRequestException("Failed During Request To Google API");
         }
     }
 
@@ -73,6 +70,7 @@ public class StaticMapClient implements AutoCloseable{
             System.out.println("Closing StaticMapClient");
             this.context.close();
         } catch (IOException e) {
+            e.printStackTrace();
             throw new FailedRequestException("Failed To Close StaticMapClient");
         }
     }

@@ -1,7 +1,5 @@
 package dev.archtech.geomapper.model;
 
-import java.time.LocalDateTime;
-
 public class GPSRowData {
     private String time;
     private String longitude;
