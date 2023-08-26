@@ -6,7 +6,7 @@
 
     <groupId>dev.archtech.geomapper</groupId>
     <artifactId>GeoMapper</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <name>GeoMapper</name>
 
     <properties>

@@ -75,6 +75,7 @@ public class RequestView extends GridPane {
         this.startingRowEntry.disableProperty().bind(this.requestModel.isRunningProperty());
         this.selectFileButton.disableProperty().bind(this.requestModel.isRunningProperty());
         this.submitButton.disableProperty().bind(this.requestModel.isRunningProperty());
+        this.useRangeCheckBox.disableProperty().bind(this.requestModel.isRunningProperty());
     }
 
     private void bindVisibility(){
