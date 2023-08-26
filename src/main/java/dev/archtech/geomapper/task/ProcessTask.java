@@ -1,14 +1,17 @@
 package dev.archtech.geomapper.task;
 
 import com.opencsv.exceptions.CsvValidationException;
-import dev.archtech.geomapper.service.StaticMapClient;
 import dev.archtech.geomapper.exception.FailedRequestException;
 import dev.archtech.geomapper.model.GPSRowData;
 import dev.archtech.geomapper.model.MapRequest;
+import dev.archtech.geomapper.service.StaticMapClient;
 import dev.archtech.geomapper.util.GPSFileReader;
 import javafx.concurrent.Task;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 

@@ -23,6 +23,7 @@ public class RequestModel {
     private final SimpleStringProperty submitStatus;
     private final SimpleBooleanProperty enableSubmitButton;
     private final SimpleBooleanProperty isRunning;
+    private final SimpleBooleanProperty useRange;
     private final Map<String, Integer> zoomValueMap = Map.of(
     "World", 1,
     "Street", 15,
@@ -52,7 +53,7 @@ public class RequestModel {
         this.submitStatus =  new SimpleStringProperty("");
         this.selectedZoom = new SimpleStringProperty(this.zoomChoices.get(2));
         this.selectedMapType = new SimpleStringProperty(this.mapTypeChoices.get(0));
-
+        this.useRange = new SimpleBooleanProperty(false);
         this.enableSubmitButton = new SimpleBooleanProperty();
         this.isRunning = new SimpleBooleanProperty(false);
     }
@@ -103,6 +104,18 @@ public class RequestModel {
 
     public void setMapTypeChoices(ObservableList<String> mapTypeChoices) {
         this.mapTypeChoices.set(mapTypeChoices);
+    }
+
+    public boolean isUseRange() {
+        return useRange.get();
+    }
+
+    public SimpleBooleanProperty useRangeProperty() {
+        return useRange;
+    }
+
+    public void setUseRange(boolean useRange) {
+        this.useRange.set(useRange);
     }
 
     public boolean isUsesUniqueTimestamps() {

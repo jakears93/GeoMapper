@@ -37,6 +37,8 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label fx:id="mapParamLabel" alignment="TOP_LEFT" contentDisplay="TOP" text="Map Parameters" underline="true" GridPane.columnSpan="2">
@@ -50,22 +52,27 @@
                </font>
             </Label>
             <TextField fx:id="apiKeyEntry" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-            <Label fx:id="zoomLabel" text="Zoom Level" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+            <Label fx:id="zoomLabel" text="Zoom Level" GridPane.halignment="CENTER" GridPane.rowIndex="5">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <ChoiceBox fx:id="zoomChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <ChoiceBox fx:id="mapTypeChoiceBox" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-            <Label fx:id="mapTypeLabel" text="Map Type" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-            <CheckBox fx:id="uniqueTimestampsCheckBox" mnemonicParsing="false" text="Unique Timestamps" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+            <ChoiceBox fx:id="zoomChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <ChoiceBox fx:id="mapTypeChoiceBox" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+            <Label fx:id="mapTypeLabel" text="Map Type" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+            <CheckBox fx:id="useRangeCheckBox" mnemonicParsing="false" text="Select Data Range" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="6">
                <font>
                   <Font size="14.0" />
                </font>
             </CheckBox>
-            <Label fx:id="lastDataRowLabel" text="Final Data Row" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-            <TextField fx:id="lastDataRowEntry" maxWidth="150.0" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-            <Button fx:id="selectFileButton" mnemonicParsing="false" text="Choose File" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
+            <CheckBox fx:id="uniqueTimestampsCheckBox" mnemonicParsing="false" text="Unique Timestamps" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </CheckBox>
+            <Label fx:id="lastDataRowLabel" text="Final Data Row" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
+            <TextField fx:id="lastDataRowEntry" maxWidth="150.0" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+            <Button fx:id="selectFileButton" mnemonicParsing="false" text="Choose File" GridPane.halignment="RIGHT" GridPane.rowIndex="9">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
@@ -73,16 +80,16 @@
                   <Insets />
                </opaqueInsets>
             </Button>
-            <Label fx:id="fileNameLabel" maxWidth="300.0" text="" textOverrun="LEADING_WORD_ELLIPSIS" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="LEFT" GridPane.rowIndex="7">
+            <Label fx:id="fileNameLabel" maxWidth="300.0" text="" textOverrun="LEADING_WORD_ELLIPSIS" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="LEFT" GridPane.rowIndex="9">
                <GridPane.margin>
                   <Insets left="20.0" />
                </GridPane.margin></Label>
-            <Button fx:id="submitButton" mnemonicParsing="false" text="Submit" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
+            <Button fx:id="submitButton" mnemonicParsing="false" text="Submit" GridPane.halignment="RIGHT" GridPane.rowIndex="10">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
             </Button>
-            <Label fx:id="submitStatusLabel" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="8">
+            <Label fx:id="submitStatusLabel" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="10">
                <GridPane.margin>
                   <Insets left="20.0" />
                </GridPane.margin></Label>
@@ -92,9 +99,9 @@
                </font>
             </Label>
             <TextField fx:id="secretEntry" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-            <Label fx:id="startingRowLabel" text="Starting Data Row" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-            <TextField fx:id="startingRowEntry" maxWidth="150.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <ProgressBar fx:id="progressBar" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" progress="0.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="9" />
+            <Label fx:id="startingRowLabel" text="Starting Data Row" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
+            <TextField fx:id="startingRowEntry" maxWidth="150.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <ProgressBar fx:id="progressBar" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" progress="0.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="11" />
          </children>
       </RequestView>
    </children>

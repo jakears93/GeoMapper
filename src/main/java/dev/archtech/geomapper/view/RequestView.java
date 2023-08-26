@@ -18,6 +18,7 @@ public class RequestView extends GridPane {
     private TextField secretEntry;
     private ChoiceBox<String> zoomChoiceBox;
     private ChoiceBox<String> mapTypeChoiceBox;
+    private CheckBox useRangeCheckBox;
     private CheckBox uniqueTimestampsCheckBox;
     private TextField lastDataRowEntry;
     private TextField startingRowEntry;
@@ -26,12 +27,15 @@ public class RequestView extends GridPane {
     private Button selectFileButton;
     private Label submitStatusLabel;
     private ProgressBar progressBar;
+    private Label startingRowLabel;
+    private Label lastDataRowLabel;
 
     private void setProperties(){
         this.apiKeyEntry = ((TextField)this.lookup("#apiKeyEntry"));
         this.secretEntry = ((TextField)this.lookup("#secretEntry"));
         this.zoomChoiceBox = ((ChoiceBox<String>)this.lookup("#zoomChoiceBox"));
         this.mapTypeChoiceBox = ((ChoiceBox<String>)this.lookup("#mapTypeChoiceBox"));
+        this.useRangeCheckBox = ((CheckBox)this.lookup("#useRangeCheckBox"));
         this.uniqueTimestampsCheckBox = ((CheckBox)this.lookup("#uniqueTimestampsCheckBox"));
         this.lastDataRowEntry = ((TextField)this.lookup("#lastDataRowEntry"));
         this.startingRowEntry = ((TextField)this.lookup("#startingRowEntry"));
@@ -40,6 +44,8 @@ public class RequestView extends GridPane {
         this.selectFileButton = ((Button) this.lookup("#selectFileButton"));
         this.submitStatusLabel = ((Label)this.lookup("#submitStatusLabel"));
         this.progressBar = ((ProgressBar)this.lookup("#progressBar"));
+        this.startingRowLabel = ((Label)this.lookup("#startingRowLabel"));
+        this.lastDataRowLabel = ((Label)this.lookup("#lastDataRowLabel"));
     }
 
     private void bindValues(){
@@ -47,6 +53,7 @@ public class RequestView extends GridPane {
         this.secretEntry.textProperty().bindBidirectional(requestModel.secretProperty());
         this.zoomChoiceBox.itemsProperty().bind(requestModel.zoomChoicesProperty());
         this.mapTypeChoiceBox.itemsProperty().bind(requestModel.mapTypeChoicesProperty());
+        this.useRangeCheckBox.selectedProperty().bindBidirectional(requestModel.useRangeProperty());
         this.uniqueTimestampsCheckBox.selectedProperty().bindBidirectional(requestModel.usesUniqueTimestampsProperty());
         this.lastDataRowEntry.textProperty().bindBidirectional(requestModel.lastDataRowProperty());
         this.startingRowEntry.textProperty().bindBidirectional(requestModel.startingRowProperty());
@@ -68,11 +75,15 @@ public class RequestView extends GridPane {
         this.startingRowEntry.disableProperty().bind(this.requestModel.isRunningProperty());
         this.selectFileButton.disableProperty().bind(this.requestModel.isRunningProperty());
         this.submitButton.disableProperty().bind(this.requestModel.isRunningProperty());
-        this.progressBar.visibleProperty().bind(this.requestModel.isRunningProperty());
     }
 
     private void bindVisibility(){
+        this.progressBar.visibleProperty().bind(this.requestModel.isRunningProperty());
         this.submitButton.visibleProperty().bind(this.requestModel.enableSubmitButtonProperty());
+        this.startingRowLabel.visibleProperty().bind(this.requestModel.useRangeProperty());
+        this.lastDataRowLabel.visibleProperty().bind(this.requestModel.useRangeProperty());
+        this.startingRowEntry.visibleProperty().bind(this.requestModel.useRangeProperty());
+        this.lastDataRowEntry.visibleProperty().bind(this.requestModel.useRangeProperty());
     }
 
     public void init(RequestModel model){

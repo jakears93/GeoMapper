@@ -1,18 +1,13 @@
 package dev.archtech.geomapper.service;
 
-import com.opencsv.exceptions.CsvValidationException;
-import dev.archtech.geomapper.exception.FailedRequestException;
 import dev.archtech.geomapper.model.MapParameters;
 import dev.archtech.geomapper.model.MapRequest;
 import dev.archtech.geomapper.model.RequestModel;
 import dev.archtech.geomapper.task.ProcessTask;
 import dev.archtech.geomapper.util.GPSFileReader;
 import javafx.beans.binding.Bindings;
-import javafx.scene.control.ProgressBar;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 public class RequestService {
     RequestModel viewModel;
@@ -61,22 +56,34 @@ public class RequestService {
     }
 
     public ProcessTask beginProcessRequest(){
-        MapParameters mapParameters = new MapParameters(this.viewModel.getApiKey(), this.viewModel.getSecret(), this.viewModel.getZoomValue(), this.viewModel.getSelectedMapType().toLowerCase());
-        MapRequest mapRequest = new MapRequest(mapParameters, this.viewModel.getStartingRow()-1, this.viewModel.getLastDataRow()-1, this.viewModel.isUsesUniqueTimestamps(), this.viewModel.getFileName());
-        int availableRows = evaluateAvailableRows(mapRequest.getDataFileName(), mapRequest.getStartingRowIndex(), mapRequest.getLastDataRowIndex());
+        int availableRows;
+        if(!this.viewModel.isUseRange()){
+            this.viewModel.setStartingRow("2");
+            availableRows = evaluateAvailableRows(this.viewModel.getFileName(), this.viewModel.getStartingRow()-1, Integer.MAX_VALUE);
+        }
+        else {
+            availableRows = evaluateAvailableRows(this.viewModel.getFileName(), this.viewModel.getStartingRow()-1, this.viewModel.getLastDataRow()-1);
+        }
         if(availableRows == 0){
             this.viewModel.submitStatusProperty().set("Starting Row Larger Than Available Rows");
             return null;
         }
         else if (availableRows == -1) {
-            this.viewModel.submitStatusProperty().set(String.format("Unable To Read File %s", mapRequest.getDataFileName()));
+            this.viewModel.submitStatusProperty().set(String.format("Unable To Read File %s", this.viewModel.getFileName()));
             return null;
         }
-        mapRequest.setLastDataRowIndex(mapRequest.getStartingRowIndex() + availableRows -1);
+        this.viewModel.setLastDataRow(String.valueOf(this.viewModel.getStartingRow()-1 + availableRows));
 
-        ProcessTask task = new ProcessTask(mapRequest);
+        ProcessTask task = createProcessTask();
         new Thread(task).start();
         return task;
+    }
+
+    private ProcessTask createProcessTask() {
+        MapParameters mapParameters = new MapParameters(this.viewModel.getApiKey(), this.viewModel.getSecret(), this.viewModel.getZoomValue(), this.viewModel.getSelectedMapType().toLowerCase());
+        MapRequest mapRequest = new MapRequest(mapParameters, this.viewModel.getStartingRow()-1, this.viewModel.getLastDataRow()-1, this.viewModel.isUsesUniqueTimestamps(), this.viewModel.getFileName());
+
+        return new ProcessTask(mapRequest);
     }
 }
 
