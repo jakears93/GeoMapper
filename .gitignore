@@ -41,6 +41,5 @@ build/
 
 releases/
 install.sh
-release.sh
 dependency-reduced-pom.xml
 output/
