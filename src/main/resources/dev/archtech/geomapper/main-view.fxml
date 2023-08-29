@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.PasswordField?>
 <VBox fx:id="mainWindow" maxHeight="350.0" maxWidth="800.0" minHeight="350.0" minWidth="600.0" prefHeight="350.0" prefWidth="700.0" spacing="20.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.archtech.geomapper.controller.RequestController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -51,7 +52,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="apiKeyEntry" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+            <PasswordField fx:id="apiKeyEntry" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
             <Label fx:id="zoomLabel" text="Zoom Level" GridPane.halignment="CENTER" GridPane.rowIndex="5">
                <font>
                   <Font size="14.0" />
@@ -98,7 +99,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="secretEntry" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+            <PasswordField fx:id="secretEntry" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
             <Label fx:id="startingRowLabel" text="Starting Data Row" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
             <TextField fx:id="startingRowEntry" maxWidth="150.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
             <ProgressBar fx:id="progressBar" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" progress="0.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="11" />

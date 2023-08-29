@@ -43,3 +43,5 @@ releases/
 install.sh
 dependency-reduced-pom.xml
 output/
+secrets
+pom.xml.versionsBackup

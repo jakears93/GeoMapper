@@ -14,8 +14,8 @@ import java.io.File;
 public class RequestView extends GridPane {
     private RequestModel requestModel;
     private RequestService requestService;
-    private TextField apiKeyEntry;
-    private TextField secretEntry;
+    private PasswordField apiKeyEntry;
+    private PasswordField secretEntry;
     private ChoiceBox<String> zoomChoiceBox;
     private ChoiceBox<String> mapTypeChoiceBox;
     private CheckBox useRangeCheckBox;
@@ -31,8 +31,8 @@ public class RequestView extends GridPane {
     private Label lastDataRowLabel;
 
     private void setProperties(){
-        this.apiKeyEntry = ((TextField)this.lookup("#apiKeyEntry"));
-        this.secretEntry = ((TextField)this.lookup("#secretEntry"));
+        this.apiKeyEntry = ((PasswordField)this.lookup("#apiKeyEntry"));
+        this.secretEntry = ((PasswordField)this.lookup("#secretEntry"));
         this.zoomChoiceBox = ((ChoiceBox<String>)this.lookup("#zoomChoiceBox"));
         this.mapTypeChoiceBox = ((ChoiceBox<String>)this.lookup("#mapTypeChoiceBox"));
         this.useRangeCheckBox = ((CheckBox)this.lookup("#useRangeCheckBox"));
