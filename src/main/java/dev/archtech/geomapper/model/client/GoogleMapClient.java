@@ -1,4 +1,4 @@
-package dev.archtech.geomapper.service;
+package dev.archtech.geomapper.model.client;
 
 import com.google.maps.GeoApiContext;
 import com.google.maps.ImageResult;
@@ -8,18 +8,17 @@ import com.google.maps.errors.ApiException;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.Size;
 import dev.archtech.geomapper.exception.FailedRequestException;
-import dev.archtech.geomapper.model.MapParameters;
+import dev.archtech.geomapper.model.map.RequestParameters;
 
 import java.io.IOException;
 
-public class StaticMapClient implements AutoCloseable{
-    private GeoApiContext context;
+public class GoogleMapClient implements StaticMapClient{
+    private final GeoApiContext context;
     private static final int DEFAULT_QPS = 250;
     private static final Size DEFAULT_SIZE = new Size(400, 400);
-    private static final String DEFAULT_MARKER_COLOR = "blue";
 
-    public StaticMapClient(String apiKey, String secret) {
-        if(secret.equals(null) || secret.isEmpty()) {
+    public GoogleMapClient(String apiKey, String secret) {
+        if(secret == null || secret.isEmpty()) {
             this.context = new GeoApiContext.Builder()
                     .apiKey(apiKey)
                     .queryRateLimit(DEFAULT_QPS)
@@ -38,23 +37,33 @@ public class StaticMapClient implements AutoCloseable{
         }
     }
 
-    public byte[] submitRequest(MapParameters mapParameters){
+    @Override
+    public byte[] submitRequest(RequestParameters mapParameters){
         StaticMapsRequest request = buildRequest(mapParameters);
         try {
             ImageResult result = request.await();
             return result.imageData;
         } catch (ApiException | InterruptedException | IOException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
             throw new FailedRequestException("Failed During Request To Google API");
         }
     }
 
-    private StaticMapsRequest buildRequest(MapParameters mapParameters){
+
+
+    private StaticMapsRequest buildRequest(RequestParameters mapParameters){
         LatLng location = new LatLng(mapParameters.getLatitude(), mapParameters.getLongitude());
         StaticMapsRequest.Markers markers = new StaticMapsRequest.Markers();
         markers.addLocation(location);
-        markers.color(DEFAULT_MARKER_COLOR);
-        markers.size(StaticMapsRequest.Markers.MarkersSize.tiny);
+        markers.color(mapParameters.getMarkerColour());
+        StaticMapsRequest.Markers.MarkersSize markersSize;
+        if(mapParameters.getMarkerSize().equals("tiny")){
+            markersSize = StaticMapsRequest.Markers.MarkersSize.tiny;
+        }
+        else{
+            markersSize = StaticMapsRequest.Markers.MarkersSize.normal;
+        }
+        markers.size(markersSize);
 
         StaticMapsRequest request = StaticMapsApi.newRequest(this.context, DEFAULT_SIZE);
         request.center(location);
@@ -67,11 +76,11 @@ public class StaticMapClient implements AutoCloseable{
     @Override
     public void close(){
         try {
-            System.out.println("Closing StaticMapClient");
+            System.out.println("Closing GoogleMapClient");
             this.context.close();
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new FailedRequestException("Failed To Close StaticMapClient");
+            System.err.println(e.getMessage());
+            throw new FailedRequestException("Failed To Close GoogleMapClient");
         }
     }
 

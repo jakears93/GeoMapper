@@ -1,14 +1,22 @@
 package dev.archtech.geomapper.model.map;
 
-public enum MarkerName {
+public enum MarkerSize {
     SMALL("pin-s", "tiny"),
     LARGE("pin-l", "normal");
 
     private String mapboxSize;
     private String googleSize;
 
-    MarkerName(String mapboxSize, String googleSize) {
+    MarkerSize(String mapboxSize, String googleSize) {
         this.mapboxSize = mapboxSize;
         this.googleSize = googleSize;
+    }
+
+    public String getMapboxSize() {
+        return mapboxSize;
+    }
+
+    public String getGoogleSize() {
+        return googleSize;
     }
 }

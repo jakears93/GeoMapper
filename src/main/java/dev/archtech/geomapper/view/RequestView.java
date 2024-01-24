@@ -1,6 +1,7 @@
 package dev.archtech.geomapper.view;
 
 import dev.archtech.geomapper.model.RequestModel;
+import dev.archtech.geomapper.model.map.MapApiEnum;
 import dev.archtech.geomapper.service.RequestService;
 import dev.archtech.geomapper.task.ProcessTask;
 import javafx.event.ActionEvent;
@@ -12,7 +13,7 @@ import javafx.stage.FileChooser;
 import java.io.File;
 
 public class RequestView extends GridPane {
-    private ChoiceBox<String> mapApiType;
+    private ChoiceBox<MapApiEnum> mapApiType;
     private RequestModel requestModel;
     private RequestService requestService;
     private PasswordField apiKeyEntry;
@@ -32,11 +33,11 @@ public class RequestView extends GridPane {
     private Label lastDataRowLabel;
 
     private void setProperties(){
-        this.mapApiType = ((ChoiceBox<String>)this.lookup("#mapApiType"));
+        this.mapApiType = (ChoiceBox<MapApiEnum>)this.lookup("#mapApiType");
         this.apiKeyEntry = ((PasswordField)this.lookup("#apiKeyEntry"));
         this.secretEntry = ((PasswordField)this.lookup("#secretEntry"));
-        this.zoomChoiceBox = ((ChoiceBox<String>)this.lookup("#zoomChoiceBox"));
-        this.mapTypeChoiceBox = ((ChoiceBox<String>)this.lookup("#mapTypeChoiceBox"));
+        this.zoomChoiceBox = (ChoiceBox<String>)this.lookup("#zoomChoiceBox");
+        this.mapTypeChoiceBox = (ChoiceBox<String>)this.lookup("#mapTypeChoiceBox");
         this.useRangeCheckBox = ((CheckBox)this.lookup("#useRangeCheckBox"));
         this.uniqueTimestampsCheckBox = ((CheckBox)this.lookup("#uniqueTimestampsCheckBox"));
         this.lastDataRowEntry = ((TextField)this.lookup("#lastDataRowEntry"));

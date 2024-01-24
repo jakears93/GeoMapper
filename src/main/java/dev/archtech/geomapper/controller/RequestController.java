@@ -12,7 +12,4 @@ public class RequestController {
         RequestModel model = new RequestModel();
         requestView.init(model);
     }
-    public RequestView getView() {
-        return requestView;
-    }
 }

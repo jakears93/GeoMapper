@@ -19,4 +19,12 @@ public enum MarkerColour {
         this.hexCode = hexCode;
         this.colourString = colourString;
     }
+
+    public String getHexCode() {
+        return hexCode;
+    }
+
+    public String getColourString() {
+        return colourString;
+    }
 }

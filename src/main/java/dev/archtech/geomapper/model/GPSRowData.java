@@ -1,34 +1,11 @@
 package dev.archtech.geomapper.model;
 
+import dev.archtech.geomapper.model.map.Coordinates;
+import lombok.Data;
+
+@Data
 public class GPSRowData {
+    private int index;
     private String time;
-    private String longitude;
-    private String latitude;
-
-    public GPSRowData() {
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
-    }
-
-    public String getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
+    private Coordinates coordinates;
 }

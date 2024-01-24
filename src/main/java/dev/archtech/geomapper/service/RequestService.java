@@ -1,13 +1,10 @@
 package dev.archtech.geomapper.service;
 
-import dev.archtech.geomapper.model.MapParameters;
-import dev.archtech.geomapper.model.MapRequest;
 import dev.archtech.geomapper.model.RequestModel;
+import dev.archtech.geomapper.model.map.*;
 import dev.archtech.geomapper.task.ProcessTask;
 import dev.archtech.geomapper.util.GPSFileReader;
 import javafx.beans.binding.Bindings;
-
-import java.io.File;
 
 public class RequestService {
     RequestModel viewModel;
@@ -40,7 +37,7 @@ public class RequestService {
     }
     private int evaluateAvailableRows(String fileName, int startIndex, int endIndex) {
         int count = 0;
-        try (GPSFileReader fileReader = new GPSFileReader(new File(fileName))) {
+        try (GPSFileReader fileReader = new GPSFileReader(fileName)) {
             fileReader.skip(startIndex);
             while (fileReader.peek() != null) {
                 if (count >= endIndex) {
@@ -72,18 +69,40 @@ public class RequestService {
             this.viewModel.submitStatusProperty().set(String.format("Unable To Read File %s", this.viewModel.getFileName()));
             return null;
         }
-        this.viewModel.setLastDataRow(String.valueOf(this.viewModel.getStartingRow()-1 + availableRows));
-
-        ProcessTask task = createProcessTask();
+        ProcessTask task = createProcessTask(availableRows);
         new Thread(task).start();
         return task;
     }
 
-    private ProcessTask createProcessTask() {
-        MapParameters mapParameters = new MapParameters(this.viewModel.getApiKey(), this.viewModel.getSecret(), this.viewModel.getZoomValue(), this.viewModel.getSelectedMapType().toLowerCase());
-        MapRequest mapRequest = new MapRequest(mapParameters, this.viewModel.getStartingRow()-1, this.viewModel.getLastDataRow()-1, this.viewModel.isUsesUniqueTimestamps(), this.viewModel.getFileName());
+    private ProcessTask createProcessTask(int availableRows) {
+        RequestProperties properties = new RequestProperties();
+        Secret secret = new Secret();
+        secret.setApiKey(this.viewModel.getApiKey());
+        secret.setSignature(this.viewModel.getSecret());
 
-        return new ProcessTask(mapRequest);
+        //TODO remove hardcoding of marker
+        Marker marker = new Marker();
+        marker.setColour(MarkerColour.BLUE);
+        marker.setSize(MarkerSize.SMALL);
+
+        //TODO remove hard coding of image size
+        ImageSize imageSize = new ImageSize();
+        imageSize.setHeight(400);
+        imageSize.setWidth(400);
+        properties.setImageSize(imageSize);
+        properties.setApiType(this.viewModel.selectedApiTypeProperty().get());
+        properties.setSecret(secret);
+        properties.setZoom(Zoom.fromLevel(this.viewModel.getZoomValue()));
+        //TODO remove hardcoding of mapType
+        properties.setMapType(MapType.HYBRID);
+        properties.setMarker(marker);
+        properties.setUseUniqueTimestamps(this.viewModel.isUsesUniqueTimestamps());
+        properties.setUseDataRange(this.viewModel.isUseRange());
+        properties.setDataRangeStart(this.viewModel.getStartingRow()-1);
+        properties.setDataRangeEnd(this.viewModel.getStartingRow()-1 + availableRows -1);
+        properties.setInputFileName(this.viewModel.getFileName());
+
+        return new ProcessTask(properties);
     }
 }
 
