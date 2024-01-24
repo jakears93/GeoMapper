@@ -12,7 +12,8 @@ public class GPSFileReader implements AutoCloseable{
     CSVReader csvReader;
     FileReader reader;
 
-    public GPSFileReader(File file) throws FileNotFoundException {
+    public GPSFileReader(String fileName) throws FileNotFoundException {
+        File file = new File(fileName);
         this.reader = new FileReader(file);
         this.csvReader = new CSVReader(reader);
     }

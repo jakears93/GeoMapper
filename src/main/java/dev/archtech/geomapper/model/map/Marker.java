@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class Marker {
-    private MarkerName name;
+    private MarkerSize size;
     private MarkerColour colour;
-    private Coordinates location;
 }

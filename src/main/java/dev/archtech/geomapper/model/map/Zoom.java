@@ -23,4 +23,11 @@ public enum Zoom {
     public int getLevel() {
         return level;
     }
+
+    public static Zoom fromLevel(int level){
+        for(Zoom z : Zoom.values()){
+            if(z.level == level) return z;
+        }
+        throw new IllegalArgumentException("Unexpected Zoom Level: "+level);
+    }
 }

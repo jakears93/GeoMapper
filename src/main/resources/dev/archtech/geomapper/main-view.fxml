@@ -42,7 +42,12 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-             <ChoiceBox fx:id="mapApiType" prefWidth="254.0" GridPane.columnIndex="2" GridPane.columnSpan="2" />
+             <Label fx:id="mapApiLabel" alignment="CENTER_RIGHT" contentDisplay="CENTER" text="Backend API" GridPane.halignment="CENTER" GridPane.columnIndex="2" GridPane.columnSpan="1">
+                 <font>
+                     <Font size="14.0" />
+                 </font>
+             </Label>
+             <ChoiceBox fx:id="mapApiType" prefWidth="254.0" GridPane.columnIndex="3" GridPane.columnSpan="1" />
 
              <Label fx:id="mapParamLabel" alignment="TOP_LEFT" contentDisplay="TOP" text="Map Parameters" underline="true" GridPane.columnSpan="2">
                <font>
