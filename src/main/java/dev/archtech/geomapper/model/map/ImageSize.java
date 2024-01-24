@@ -1,9 +1,23 @@
 package dev.archtech.geomapper.model.map;
 
-import lombok.Data;
 
-@Data
 public class ImageSize {
     private int width;
     private int height;
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
 }
