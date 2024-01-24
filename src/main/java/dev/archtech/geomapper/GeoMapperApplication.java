@@ -8,13 +8,19 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class GeoMapperApplication extends Application {
+
+    private static String WINDOW_TITLE = "GeoMapper";
+    private static String VIEW_FILE = "main-view.fxml";
+    private static int DEFAULT_WIDTH = 700;
+    private static int DEFAULT_HEIGHT = 350;
+    private static boolean IS_RESIZABLE = false;
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(GeoMapperApplication.class.getResource("main-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 700, 350);
-        stage.setTitle("GeoMapper");
+        FXMLLoader fxmlLoader = new FXMLLoader(GeoMapperApplication.class.getResource(VIEW_FILE));
+        Scene scene = new Scene(fxmlLoader.load(), DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        stage.setTitle(WINDOW_TITLE);
         stage.setScene(scene);
-        stage.setResizable(false);
+        stage.setResizable(IS_RESIZABLE);
         stage.show();
     }
 

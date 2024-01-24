@@ -1,11 +1,13 @@
 package dev.archtech.geomapper.model;
 
+import dev.archtech.geomapper.model.map.MapApiEnum;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -32,8 +34,13 @@ public class RequestModel {
     "Street+++", 18,
     "Building", 20
     );
+    private final SimpleListProperty<String> mapApiType;
+    private final SimpleStringProperty selectedApiType;
 
     public RequestModel() {
+        this.mapApiType = new SimpleListProperty<>(FXCollections.observableList(Arrays.stream(MapApiEnum.values()).map(MapApiEnum::getValue).toList()));
+        this.selectedApiType = new SimpleStringProperty(this.mapApiType.get(0));
+
         this.apiKey =  new SimpleStringProperty("");
         this.secret =  new SimpleStringProperty("");
         this.zoomChoices = new SimpleListProperty<>(FXCollections.observableList(this.zoomValueMap.keySet()
@@ -228,5 +235,17 @@ public class RequestModel {
 
     public void setIsRunning(boolean isRunning) {
         this.isRunning.set(isRunning);
+    }
+
+    public SimpleStringProperty selectedApiTypeProperty() {
+        return selectedApiType;
+    }
+
+    public ObservableList<String> getMapApiType() {
+        return mapApiType.get();
+    }
+
+    public SimpleListProperty<String> mapApiTypeProperty() {
+        return mapApiType;
     }
 }
