@@ -8,6 +8,7 @@ module dev.archtech.geomapper.geomapper {
     requires com.opencsv;
     requires com.google.gson;
     requires google.maps.services;
+    requires lombok;
 
     opens dev.archtech.geomapper to javafx.fxml;
     exports dev.archtech.geomapper;
@@ -26,4 +27,6 @@ module dev.archtech.geomapper.geomapper {
 
     exports dev.archtech.geomapper.view;
     opens dev.archtech.geomapper.view to javafx.fxml;
+    exports dev.archtech.geomapper.model.map;
+    opens dev.archtech.geomapper.model.map to javafx.fxml;
 }

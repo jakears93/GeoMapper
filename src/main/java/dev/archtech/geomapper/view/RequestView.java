@@ -12,6 +12,7 @@ import javafx.stage.FileChooser;
 import java.io.File;
 
 public class RequestView extends GridPane {
+    private ChoiceBox<String> mapApiType;
     private RequestModel requestModel;
     private RequestService requestService;
     private PasswordField apiKeyEntry;
@@ -31,6 +32,7 @@ public class RequestView extends GridPane {
     private Label lastDataRowLabel;
 
     private void setProperties(){
+        this.mapApiType = ((ChoiceBox<String>)this.lookup("#mapApiType"));
         this.apiKeyEntry = ((PasswordField)this.lookup("#apiKeyEntry"));
         this.secretEntry = ((PasswordField)this.lookup("#secretEntry"));
         this.zoomChoiceBox = ((ChoiceBox<String>)this.lookup("#zoomChoiceBox"));
@@ -49,6 +51,8 @@ public class RequestView extends GridPane {
     }
 
     private void bindValues(){
+        this.mapApiType.itemsProperty().bind(requestModel.mapApiTypeProperty());
+        this.mapApiType.valueProperty().bindBidirectional(requestModel.selectedApiTypeProperty());
         this.apiKeyEntry.textProperty().bindBidirectional(requestModel.apiKeyProperty());
         this.secretEntry.textProperty().bindBidirectional(requestModel.secretProperty());
         this.zoomChoiceBox.itemsProperty().bind(requestModel.zoomChoicesProperty());

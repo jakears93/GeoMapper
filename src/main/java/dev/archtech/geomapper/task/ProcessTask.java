@@ -39,6 +39,10 @@ public class ProcessTask extends Task<String> {
     }
 
     private String processRequest() {
+//        System.out.println("Standard old request: "+"MapRequest{mapParameters=MapParameters{apiKey='1234567891234567', secret='123456789', zoom=16, mapType='roadmap', latitude=0.0, longitude=0.0}, startingRowIndex=4, lastDataRowIndex=502, uniqueFlag=true, dataFileName='/home/jake/Downloads/Tran Tracking Editable file(1).csv'}");
+//        System.out.println(mapRequest);
+//        return "Debug Done";
+
         File directory = new File(outputDirectory);
         directory.mkdir();
         int availableRows = this.mapRequest.getLastDataRowIndex() - this.mapRequest.getStartingRowIndex() +1;
