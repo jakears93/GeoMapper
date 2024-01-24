@@ -38,11 +38,11 @@ public class GoogleMapClient implements StaticMapClient{
     }
 
     @Override
-    public byte[] submitRequest(RequestParameters mapParameters){
+    public dev.archtech.geomapper.model.map.ImageResult submitRequest(RequestParameters mapParameters){
         StaticMapsRequest request = buildRequest(mapParameters);
         try {
             ImageResult result = request.await();
-            return result.imageData;
+            return new dev.archtech.geomapper.model.map.ImageResult(result.imageData);
         } catch (ApiException | InterruptedException | IOException e) {
             System.err.println(e.getMessage());
             throw new FailedRequestException("Failed During Request To Google API");

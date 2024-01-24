@@ -8,8 +8,8 @@ module dev.archtech.geomapper.geomapper {
     requires com.opencsv;
     requires com.google.gson;
     requires google.maps.services;
-    requires org.apache.httpcomponents.httpclient;
-    requires org.apache.httpcomponents.httpcore;
+    requires org.apache.httpcomponents.client5.httpclient5;
+    requires org.apache.httpcomponents.core5.httpcore5;
 
     opens dev.archtech.geomapper to javafx.fxml;
     exports dev.archtech.geomapper;

@@ -1,7 +1,8 @@
 package dev.archtech.geomapper.model.client;
 
+import dev.archtech.geomapper.model.map.ImageResult;
 import dev.archtech.geomapper.model.map.RequestParameters;
 
 public interface StaticMapClient extends AutoCloseable {
-    byte[] submitRequest(RequestParameters mapParameters);
+    ImageResult submitRequest(RequestParameters mapParameters);
 }
