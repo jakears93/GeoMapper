@@ -6,9 +6,9 @@ public enum MapType {
     TERRAIN("Terrain", "outdoors-v12","terrain"),
     HYBRID("Hybrid", "satellite-streets-v12","hybrid");
 
-    private String title;
-    private String mapboxString;
-    private String googleString;
+    private final String title;
+    private final String mapboxString;
+    private final String googleString;
 
     MapType(String title, String mapboxString, String googleString) {
         this.title = title;
@@ -31,5 +31,9 @@ public enum MapType {
 
     public String getGoogleString() {
         return googleString;
+    }
+
+    public String getTitle() {
+        return title;
     }
 }

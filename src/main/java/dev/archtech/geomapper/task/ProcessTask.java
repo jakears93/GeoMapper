@@ -45,12 +45,15 @@ public class ProcessTask extends Task<String> {
 
     private String processRequest() {
         File directory = new File(outputDirectory);
-        directory.mkdir();
+        boolean madeDirectory = directory.mkdir();
+        if(madeDirectory){
+            System.out.println("Created new directory: "+directory.getAbsolutePath());
+        }
         int availableRows = this.properties.getDataRangeEnd() - this.properties.getDataRangeStart() +1;
         int duplicateRowCount = 0;
         try (
                 StaticMapClient client = StaticMapClientFactory.createClient(this.properties);
-                GPSFileReader fileReader = new GPSFileReader(this.properties.getInputFileName());
+                GPSFileReader fileReader = new GPSFileReader(this.properties.getInputFileName())
         ){
             fileReader.skip(this.properties.getDataRangeStart());
             for(int i = this.properties.getDataRangeStart(); i<=this.properties.getDataRangeEnd(); i++){

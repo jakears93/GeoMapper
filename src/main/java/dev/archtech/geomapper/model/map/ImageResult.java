@@ -1,4 +1,3 @@
 package dev.archtech.geomapper.model.map;
 
-public record ImageResult(byte[] data) {
-}
+public record ImageResult(byte[] data) {}
