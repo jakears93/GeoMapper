@@ -7,7 +7,7 @@ import dev.archtech.geomapper.util.GPSFileReader;
 import javafx.beans.binding.Bindings;
 
 public class RequestService {
-    RequestModel viewModel;
+    private final RequestModel viewModel;
 
     public RequestService(RequestModel viewModel) {
         this.viewModel = viewModel;

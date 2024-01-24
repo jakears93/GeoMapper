@@ -4,8 +4,8 @@ public enum MarkerSize {
     SMALL("pin-s", "tiny"),
     LARGE("pin-l", "normal");
 
-    private String mapboxSize;
-    private String googleSize;
+    private final String mapboxSize;
+    private final String googleSize;
 
     MarkerSize(String mapboxSize, String googleSize) {
         this.mapboxSize = mapboxSize;

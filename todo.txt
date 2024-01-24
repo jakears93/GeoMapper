@@ -3,7 +3,7 @@ TODO:
         -add all necessary javafx classifier jars
         -create release script
             -create new package that has update scripts, install scripts and jar. Name it GeoMapperPackage.zip
-            -create release on github using:  gh release create "version" [geomapperpackage] -t "title" -n "release notes"
+            -create release on GitHub using:  gh release create "version" [geomapperpackage] -t "title" -n "release notes"
         -add release script to mvn package?
         -create install scripts
             -download jdk

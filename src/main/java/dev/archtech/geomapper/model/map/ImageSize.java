@@ -1,6 +1,5 @@
 package dev.archtech.geomapper.model.map;
 
-
 public class ImageSize {
     private int width;
     private int height;

@@ -8,12 +8,8 @@ public enum MarkerColour {
     BLACK("FFFFFF", "black"),
     GREY("888888", "grey");
 
-    private String hexCode;
-    private String colourString;
-
-    MarkerColour(String hexCode) {
-        this.hexCode = hexCode;
-    }
+    private final String hexCode;
+    private final String colourString;
 
     MarkerColour(String hexCode, String colourString) {
         this.hexCode = hexCode;

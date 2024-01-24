@@ -30,4 +30,6 @@ module dev.archtech.geomapper.geomapper {
     opens dev.archtech.geomapper.view to javafx.fxml;
     exports dev.archtech.geomapper.model.map;
     opens dev.archtech.geomapper.model.map to javafx.fxml;
+    exports dev.archtech.geomapper.model.client;
+    opens dev.archtech.geomapper.model.client to javafx.fxml;
 }
