@@ -1,12 +1,12 @@
 package dev.archtech.geomapper.model.client;
 
 import dev.archtech.geomapper.exception.FailedRequestException;
+import dev.archtech.geomapper.model.map.ImageResult;
 import dev.archtech.geomapper.model.map.RequestParameters;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpUriRequest;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
 
 import java.io.IOException;
 
@@ -20,16 +20,17 @@ public class MapBoxClient implements StaticMapClient{
     }
 
     @Override
-    public byte[] submitRequest(RequestParameters mapParameters) {
+    public ImageResult submitRequest(RequestParameters mapParameters) {
         HttpUriRequest request = buildRequest(mapParameters);
-
-        try (CloseableHttpResponse response = this.client.execute(request)){
-            if(response.getStatusLine().getStatusCode() == 200){
-                return response.getEntity().getContent().readAllBytes();
-            }
-            else{
-                throw new IOException("MapBox response code: "+response.getStatusLine().getStatusCode()+ "\tReason: "+response.getStatusLine().getReasonPhrase());
-            }
+        try{
+            return this.client.execute(request, classicHttpResponse -> {
+                if(classicHttpResponse.getCode() == 200){
+                    return new ImageResult(classicHttpResponse.getEntity().getContent().readAllBytes());
+                }
+                else{
+                    throw new IOException("MapBox response code: "+classicHttpResponse.getCode()+ "\tReason: "+classicHttpResponse.getReasonPhrase());
+                }
+            });
         } catch (IOException e) {
             System.err.println(e.getMessage());
             throw new FailedRequestException("Failed During Request To MapBox API");

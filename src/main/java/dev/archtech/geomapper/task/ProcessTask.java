@@ -5,6 +5,7 @@ import dev.archtech.geomapper.exception.FailedRequestException;
 import dev.archtech.geomapper.model.GPSRowData;
 import dev.archtech.geomapper.model.client.StaticMapClient;
 import dev.archtech.geomapper.model.map.Coordinates;
+import dev.archtech.geomapper.model.map.ImageResult;
 import dev.archtech.geomapper.model.map.RequestParameters;
 import dev.archtech.geomapper.model.map.RequestProperties;
 import dev.archtech.geomapper.util.GPSFileReader;
@@ -69,8 +70,8 @@ public class ProcessTask extends Task<String> {
                 RequestParameters parameters = ParameterResolver.resolveParameters(this.properties, rowData);
 
                 String fileName = generateFileName(rowData);
-                byte[] imageBytes = client.submitRequest(parameters);
-                saveImage(imageBytes, fileName);
+                ImageResult image = client.submitRequest(parameters);
+                saveImage(image.data(), fileName);
                 updateProgress(i+1, availableRows);
             }
             updateProgress(100,100);
