@@ -9,9 +9,12 @@ import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MapBoxClient implements StaticMapClient{
-    private static final String BASE_URL = "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/-122.3187,37.9395,10.83,0/300x200?access_token=YOUR_MAPBOX_ACCESS_TOKEN";
+    private static final String BASE_URL = "https://api.mapbox.com/styles/v1/mapbox/%s/static/%.4f,%.4f,%d,0/%dx%d?access_token=%s";
+    private static final int DEFAULT_WIDTH = 400;
+    private static final int DEFAULT_HEIGHT = 400;
 
     private final CloseableHttpClient client;
 
@@ -22,24 +25,47 @@ public class MapBoxClient implements StaticMapClient{
     @Override
     public ImageResult submitRequest(RequestParameters mapParameters) {
         HttpUriRequest request = buildRequest(mapParameters);
-        try{
-            return this.client.execute(request, classicHttpResponse -> {
-                if(classicHttpResponse.getCode() == 200){
-                    return new ImageResult(classicHttpResponse.getEntity().getContent().readAllBytes());
-                }
-                else{
-                    throw new IOException("MapBox response code: "+classicHttpResponse.getCode()+ "\tReason: "+classicHttpResponse.getReasonPhrase());
-                }
-            });
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-            throw new FailedRequestException("Failed During Request To MapBox API");
-        }
+        AtomicBoolean repeat = new AtomicBoolean(false);
+        ImageResult image = null;
+        do {
+            try{
+                image = this.client.execute(request, classicHttpResponse -> {
+                    if(classicHttpResponse.getCode() == 200){
+                        repeat.set(false);
+                        return new ImageResult(classicHttpResponse.getEntity().getContent().readAllBytes());
+                    }
+                    else if(classicHttpResponse.getCode() == 429){
+                        System.out.println("Rate Limit Reached.  Waiting 60 seconds and trying again");
+                        try {
+                            Thread.sleep(60000);
+                            repeat.set(true);
+                            return null;
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException("MapBox response code: "+classicHttpResponse.getCode()+ "\tReason: "+classicHttpResponse.getReasonPhrase());
+                        }
+                    }
+                    else{
+                        throw new IOException("MapBox response code: "+classicHttpResponse.getCode()+ "\tReason: "+classicHttpResponse.getReasonPhrase());
+                    }
+                });
+            } catch (IOException | RuntimeException e) {
+                System.err.println(e.getMessage());
+                throw new FailedRequestException("Failed During Request To MapBox API");
+            }
+        } while(repeat.get());
+        return image;
     }
 
     private HttpUriRequest buildRequest(RequestParameters mapParameters){
-        HttpUriRequest request = new HttpGet("https://www.google.com/images/branding/googlelogo/1x/googlelogo_light_color_272x92dp.png");
-        return request;
+        String requestURL = String.format(BASE_URL,
+                mapParameters.getMapType(),
+                mapParameters.getLongitude(),
+                mapParameters.getLatitude(),
+                mapParameters.getZoom(),
+                DEFAULT_WIDTH,
+                DEFAULT_HEIGHT,
+                mapParameters.getApiKey());
+        return new HttpGet(requestURL);
     }
 
     @Override

@@ -16,8 +16,8 @@ public class RequestModel {
     private final SimpleStringProperty secret;
     private final SimpleListProperty<String> zoomChoices;
     private final SimpleStringProperty selectedZoom;
-    private final SimpleListProperty<String> mapTypeChoices;
-    private final SimpleStringProperty selectedMapType;
+    private final SimpleListProperty<MapType> mapTypeChoices;
+    private final SimpleObjectProperty<MapType> selectedMapType;
     private final SimpleBooleanProperty usesUniqueTimestamps;
     private final SimpleStringProperty lastDataRow;
     private final SimpleStringProperty startingRow;
@@ -41,16 +41,14 @@ public class RequestModel {
         this.zoomChoices = new SimpleListProperty<>(FXCollections.observableList(
                 Arrays.stream(Zoom.values()).map(Zoom::getLabel).toList()
         ));
-        this.mapTypeChoices = new SimpleListProperty<>(FXCollections.observableList(
-                Arrays.stream(MapType.values()).map(MapType::getTitle).toList()
-        ));
+        this.mapTypeChoices = new SimpleListProperty<>(FXCollections.observableList(Arrays.stream(MapType.values()).toList()));
         this.usesUniqueTimestamps = new SimpleBooleanProperty(true);
         this.lastDataRow =  new SimpleStringProperty(DEFAULT_END_ROW);
         this.startingRow =  new SimpleStringProperty(DEFAULT_START_ROW);
         this.fileName =  new SimpleStringProperty("");
         this.submitStatus =  new SimpleStringProperty("");
         this.selectedZoom = new SimpleStringProperty(this.zoomChoices.get(2));
-        this.selectedMapType = new SimpleStringProperty(this.mapTypeChoices.get(0));
+        this.selectedMapType = new SimpleObjectProperty<>(this.mapTypeChoices.get(0));
         this.useRange = new SimpleBooleanProperty(false);
         this.enableSubmitButton = new SimpleBooleanProperty();
         this.isRunning = new SimpleBooleanProperty(false);
@@ -71,7 +69,7 @@ public class RequestModel {
     public SimpleListProperty<String> zoomChoicesProperty() {
         return zoomChoices;
     }
-    public SimpleListProperty<String> mapTypeChoicesProperty() {
+    public SimpleListProperty<MapType> mapTypeChoicesProperty() {
         return mapTypeChoices;
     }
     public boolean isUseRange() {
@@ -119,7 +117,7 @@ public class RequestModel {
     public SimpleStringProperty selectedZoomProperty() {
         return selectedZoom;
     }
-    public SimpleStringProperty selectedMapTypeProperty() {
+    public SimpleObjectProperty<MapType> selectedMapTypeProperty() {
         return selectedMapType;
     }
     public SimpleBooleanProperty enableSubmitButtonProperty() {
