@@ -94,7 +94,7 @@ public class RequestService {
         properties.setSecret(secret);
         properties.setZoom(Zoom.fromLevel(this.viewModel.getZoomValue()));
         //TODO remove hardcoding of mapType
-        properties.setMapType(MapType.HYBRID);
+        properties.setMapType(this.viewModel.selectedMapTypeProperty().get());
         properties.setMarker(marker);
         properties.setUseUniqueTimestamps(this.viewModel.isUsesUniqueTimestamps());
         properties.setUseDataRange(this.viewModel.isUseRange());

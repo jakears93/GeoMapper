@@ -2,6 +2,7 @@ package dev.archtech.geomapper.view;
 
 import dev.archtech.geomapper.model.RequestModel;
 import dev.archtech.geomapper.model.map.MapApiEnum;
+import dev.archtech.geomapper.model.map.MapType;
 import dev.archtech.geomapper.service.RequestService;
 import dev.archtech.geomapper.task.ProcessTask;
 import javafx.event.ActionEvent;
@@ -19,7 +20,7 @@ public class RequestView extends GridPane {
     private PasswordField apiKeyEntry;
     private PasswordField secretEntry;
     private ChoiceBox<String> zoomChoiceBox;
-    private ChoiceBox<String> mapTypeChoiceBox;
+    private ChoiceBox<MapType> mapTypeChoiceBox;
     private CheckBox useRangeCheckBox;
     private CheckBox uniqueTimestampsCheckBox;
     private TextField lastDataRowEntry;
@@ -37,7 +38,7 @@ public class RequestView extends GridPane {
         this.apiKeyEntry = ((PasswordField)this.lookup("#apiKeyEntry"));
         this.secretEntry = ((PasswordField)this.lookup("#secretEntry"));
         this.zoomChoiceBox = (ChoiceBox<String>)this.lookup("#zoomChoiceBox");
-        this.mapTypeChoiceBox = (ChoiceBox<String>)this.lookup("#mapTypeChoiceBox");
+        this.mapTypeChoiceBox = (ChoiceBox<MapType>)this.lookup("#mapTypeChoiceBox");
         this.useRangeCheckBox = ((CheckBox)this.lookup("#useRangeCheckBox"));
         this.uniqueTimestampsCheckBox = ((CheckBox)this.lookup("#uniqueTimestampsCheckBox"));
         this.lastDataRowEntry = ((TextField)this.lookup("#lastDataRowEntry"));

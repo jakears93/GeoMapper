@@ -100,4 +100,21 @@ public class RequestProperties {
     public void setInputFileName(String inputFileName) {
         this.inputFileName = inputFileName;
     }
+
+    @Override
+    public String toString() {
+        return "RequestProperties{" +
+                "apiType=" + apiType +
+                ", secret=" + secret +
+                ", imageSize=" + imageSize +
+                ", zoom=" + zoom +
+                ", mapType=" + mapType +
+                ", marker=" + marker +
+                ", useUniqueTimestamps=" + useUniqueTimestamps +
+                ", useDataRange=" + useDataRange +
+                ", dataRangeStart=" + dataRangeStart +
+                ", dataRangeEnd=" + dataRangeEnd +
+                ", inputFileName='" + inputFileName + '\'' +
+                '}';
+    }
 }
