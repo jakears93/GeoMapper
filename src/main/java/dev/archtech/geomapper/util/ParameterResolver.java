@@ -12,19 +12,21 @@ public class ParameterResolver {
         parameters.setApiKey(properties.getSecret().getApiKey());
         parameters.setSignature(properties.getSecret().getSignature());
         parameters.setZoom(properties.getZoom().getLevel());
+        parameters.setWidth(properties.getImageSize().getWidth());
+        parameters.setHeight(properties.getImageSize().getHeight());
 
         //Unique Values
         parameters.setLongitude(gpsRowData.getCoordinates().getLongitude());
         parameters.setLatitude(gpsRowData.getCoordinates().getLatitude());
 
         //API Specific values
-        if(MapApiEnum.GOOGLE.equals(properties.getApiType())){
+        if(MapApiEnum.GOOGLE_STATIC_IMAGE.equals(properties.getApiType())){
             parameters.setMapType(properties.getMapType().getGoogleString());
             parameters.setMarkerSize(properties.getMarker().getSize().getGoogleSize());
             parameters.setMarkerColour(properties.getMarker().getColour().getColourString());
 
         }
-        else if(MapApiEnum.MAPBOX.equals(properties.getApiType())){
+        else if(MapApiEnum.MAPBOX_STATIC_IMAGE.equals(properties.getApiType())){
             parameters.setMapType(properties.getMapType().getMapboxString());
             parameters.setMarkerSize(properties.getMarker().getSize().getMapboxSize());
             parameters.setMarkerColour(properties.getMarker().getColour().getHexCode());

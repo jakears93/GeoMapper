@@ -9,6 +9,8 @@ public class RequestParameters {
     private double longitude;
     private String markerSize;
     private String markerColour;
+    private int height;
+    private int width;
 
     public String getApiKey() {
         return apiKey;
@@ -72,5 +74,21 @@ public class RequestParameters {
 
     public void setMarkerColour(String markerColour) {
         this.markerColour = markerColour;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
     }
 }

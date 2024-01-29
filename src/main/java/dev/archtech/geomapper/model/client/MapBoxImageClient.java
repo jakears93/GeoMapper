@@ -11,14 +11,12 @@ import org.apache.hc.client5.http.impl.classic.HttpClients;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class MapBoxClient implements StaticMapClient{
-    private static final String BASE_URL = "https://api.mapbox.com/styles/v1/mapbox/%s/static/%.4f,%.4f,%d,0/%dx%d?access_token=%s";
-    private static final int DEFAULT_WIDTH = 400;
-    private static final int DEFAULT_HEIGHT = 400;
+public class MapBoxImageClient implements StaticMapClient{
+    private static final String BASE_URL = "https://api.mapbox.com/styles/v1/mapbox/%s/static/%s+%s(%.4f,%.4f)/%.4f,%.4f,%d,0/%dx%d?access_token=%s";
 
     private final CloseableHttpClient client;
 
-    public MapBoxClient() {
+    public MapBoxImageClient() {
         this.client = HttpClients.createDefault();
     }
 
@@ -59,11 +57,15 @@ public class MapBoxClient implements StaticMapClient{
     private HttpUriRequest buildRequest(RequestParameters mapParameters){
         String requestURL = String.format(BASE_URL,
                 mapParameters.getMapType(),
+                mapParameters.getMarkerSize(),
+                mapParameters.getMarkerColour(),
+                mapParameters.getLongitude(),
+                mapParameters.getLatitude(),
                 mapParameters.getLongitude(),
                 mapParameters.getLatitude(),
                 mapParameters.getZoom(),
-                DEFAULT_WIDTH,
-                DEFAULT_HEIGHT,
+                mapParameters.getWidth(),
+                mapParameters.getHeight(),
                 mapParameters.getApiKey());
         return new HttpGet(requestURL);
     }
