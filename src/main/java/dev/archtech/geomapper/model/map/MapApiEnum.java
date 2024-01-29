@@ -1,8 +1,8 @@
 package dev.archtech.geomapper.model.map;
 
 public enum MapApiEnum {
-    MAPBOX("MapBox Static Images API"),
-    GOOGLE("Google Static Maps API");
+    MAPBOX_STATIC_IMAGE("MapBox Static Images API"),
+    GOOGLE_STATIC_IMAGE("Google Static Maps API");
 
     private final String value;
 

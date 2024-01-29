@@ -93,7 +93,6 @@ public class RequestService {
         properties.setApiType(this.viewModel.selectedApiTypeProperty().get());
         properties.setSecret(secret);
         properties.setZoom(Zoom.fromLevel(this.viewModel.getZoomValue()));
-        //TODO remove hardcoding of mapType
         properties.setMapType(this.viewModel.selectedMapTypeProperty().get());
         properties.setMarker(marker);
         properties.setUseUniqueTimestamps(this.viewModel.isUsesUniqueTimestamps());
